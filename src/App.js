@@ -20,6 +20,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
+        {/* ✅ Fallback route for undefined paths */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );

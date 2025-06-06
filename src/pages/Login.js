@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../utils/axios"; // ✅ using shared axios instance
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -13,12 +13,17 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, form);
-      localStorage.setItem("token", res.data.token);
+      const res = await api.post("/api/auth/login", form);
+      const token = res.data.accessToken;
+
+      // Store and set token for axios
+      localStorage.setItem("token", token);
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
       alert("Login successful!");
       navigate("/dashboard");
     } catch (err) {
-      alert("Login failed!");
+      alert(err.response?.data?.msg || "Login failed!");
       console.error(err);
     }
   };
@@ -73,3 +78,4 @@ function Login() {
 }
 
 export default Login;
+
