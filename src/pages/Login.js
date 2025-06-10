@@ -20,7 +20,10 @@ const handleLogin = async (e) => {
     localStorage.setItem("token", token);
 
     const decoded = JSON.parse(atob(token.split(".")[1]));
-    const role = decoded.role;
+    const role = decoded.role; console.log("✅ Decoded token:", decoded);
+console.log("✅ Role:", role);
+console.log("➡️ Navigating to:", role === "provider" ? "/provider" : "/something-else");
+
 
     // Role-based redirect
     if (role === "admin") navigate("/admin");
