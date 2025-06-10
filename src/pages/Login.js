@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 function Login() {
   const navigate = useNavigate();
@@ -23,7 +24,8 @@ function Login() {
 
       localStorage.setItem("token", token);
 
-      const decoded = JSON.parse(atob(token.split(".")[1]));
+      const decoded = jwt_decode(token);
+
       console.log("✅ Decoded token:", decoded);
 
       const role = decoded.role;
