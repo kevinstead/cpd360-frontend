@@ -10,33 +10,36 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-const handleLogin = async (e) => {
-  e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  try {
-    const res = await axios.post("http://localhost:5000/api/auth/login", form);
-    const token = res.data.token;
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", form);
 
-    localStorage.setItem("token", token);
+      console.log("✅ Backend response:", res.data);
 
-    const decoded = JSON.parse(atob(token.split(".")[1]));
-    const role = decoded.role; console.log("✅ Decoded token:", decoded);
-console.log("✅ Role:", role);
-console.log("➡️ Navigating to:", role === "provider" ? "/provider" : "/something-else");
+      const token = res.data.token;
+      console.log("✅ Token received:", token);
 
+      localStorage.setItem("token", token);
 
-    // Role-based redirect
-    if (role === "admin") navigate("/admin");
-    else if (role === "provider") navigate("/provider");
-    else if (role === "patient") navigate("/patient");
-    else navigate("/");
+      const decoded = JSON.parse(atob(token.split(".")[1]));
+      console.log("✅ Decoded token:", decoded);
 
-  } catch (err) {
-    alert(err.response?.data?.msg || "Login failed");
-    console.error(err);
-  }
-};
+      const role = decoded.role;
+      console.log("✅ Role decoded:", role);
 
+      // Role-based redirect
+      if (role === "admin") navigate("/admin");
+      else if (role === "provider") navigate("/provider");
+      else if (role === "patient") navigate("/patient");
+      else navigate("/");
+
+    } catch (err) {
+      alert(err.response?.data?.msg || "Login failed");
+      console.error("❌ Login error:", err);
+    }
+  };
 
   return (
     <div className="p-6 max-w-md mx-auto">
