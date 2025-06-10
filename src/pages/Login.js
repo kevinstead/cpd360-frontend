@@ -1,86 +1,68 @@
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+function Login() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+const handleLogin = async (e) => {
+  e.preventDefault();
 
   try {
-    const user = await User.findOne({ email });
+    const res = await axios.post("http://localhost:5000/api/auth/login", form);
+    const token = res.data.token;
 
-    if (!user) {
-      return res.status(400).json({ msg: "Invalid credentials" });
-    }
+    localStorage.setItem("token", token);
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const decoded = JSON.parse(atob(token.split(".")[1]));
+    const role = decoded.role;
 
-    if (!isMatch) {
-      return res.status(400).json({ msg: "Invalid credentials" });
-    }
+    // Role-based redirect
+    if (role === "admin") navigate("/admin");
+    else if (role === "provider") navigate("/provider");
+    else if (role === "patient") navigate("/patient");
+    else navigate("/");
 
-    const payload = {
-      userId: user._id,
-      role: user.role
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h"
-    });
-
-    res.status(200).json({
-      accessToken: token,
-      role: user.role
-    });
   } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ msg: "Server error" });
+    alert(err.response?.data?.msg || "Login failed");
+    console.error(err);
   }
 };
 
-const registerUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
 
-  try {
-    const existingUser = await User.findOne({ email });
+  return (
+    <div className="p-6 max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Login</h2>
+      <form onSubmit={handleLogin} className="grid gap-4">
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
+          className="p-2 border rounded"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="Password"
+          className="p-2 border rounded"
+          required
+        />
+        <button type="submit" className="bg-blue-600 text-white py-2 rounded">
+          Log In
+        </button>
+      </form>
+    </div>
+  );
+}
 
-    if (existingUser) {
-      return res.status(400).json({ msg: "User already exists" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role: role || "patient" // Default to "patient" if not provided
-    });
-
-    await newUser.save();
-
-    const payload = {
-      userId: newUser._id,
-      role: newUser.role
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h"
-    });
-
-    res.status(201).json({
-      accessToken: token,
-      role: newUser.role
-    });
-  } catch (err) {
-    console.error("Registration error:", err);
-    res.status(500).json({ msg: "Server error" });
-  }
-};
-
-module.exports = {
-  loginUser,
-  registerUser
-};
-
-
+export default Login;
