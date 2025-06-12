@@ -13,12 +13,20 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Debug log input values
+    console.log("🔐 Submitted values:", form);
+
+    if (!form.email || !form.password) {
+      alert("Email and password are required.");
+      return;
+    }
+
     try {
       const res = await axios.post("/api/auth/login", form);
       console.log("🟨 Raw login response:", res.data);
 
       const token = res.data.token;
-
       if (!token) {
         alert("No token received from server.");
         return;
@@ -28,12 +36,9 @@ export default function Login() {
       console.log("🟩 Decoded token:", decoded);
 
       const role = decoded.role;
-
-      // Save to localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
 
-      // Redirect
       if (role === "admin") {
         navigate("/admin/dashboard");
       } else if (role === "provider") {
@@ -43,7 +48,6 @@ export default function Login() {
       } else {
         alert("Unknown user role. Please contact support.");
       }
-
     } catch (err) {
       console.error("❌ Login error:", err);
       alert(err.response?.data?.msg || "Login failed. Check email or password.");
@@ -56,7 +60,11 @@ export default function Login() {
         <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
           Log In
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4"
+          autoComplete="off"
+        >
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email
           </label>
