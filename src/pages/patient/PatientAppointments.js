@@ -75,40 +75,40 @@ export default function PatientAppointments() {
         <h1 className="text-3xl font-bold mb-4">My Appointments</h1>
 
         <form
-  onSubmit={handleSubmit}
-  className="mb-6 grid gap-4 sm:grid-cols-3"
->
-  <input
-    type="date"
-    name="date"
-    autoComplete="off"
-    value={form.date}
-    onChange={(e) => setForm({ ...form, date: e.target.value })}
-    className="p-2 border rounded"
-    required
-  />
-
-  <input
-    type="time"
-    name="time"
-    autoComplete="off"
-    value={form.time}
-    onChange={(e) => setForm({ ...form, time: e.target.value })}
-    className="p-2 border rounded"
-    required
-  />
-
-  <input
-    type="text"
-    name="reason"
-    placeholder="Reason"
-    autoComplete="reason"
-    value={form.reason}
-    onChange={(e) => setForm({ ...form, reason: e.target.value })}
-    className="p-2 border rounded"
-    required
-  />
-
+          onSubmit={handleSubmit}
+          className="mb-6 grid gap-4 sm:grid-cols-3"
+        >
+          <input
+            type="date"
+            name="date"
+            value={form.date}
+            onChange={(e) =>
+              setForm({ ...form, date: e.target.value })
+            }
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            type="time"
+            name="time"
+            value={form.time}
+            onChange={(e) =>
+              setForm({ ...form, time: e.target.value })
+            }
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            type="text"
+            name="reason"
+            placeholder="Reason"
+            value={form.reason}
+            onChange={(e) =>
+              setForm({ ...form, reason: e.target.value })
+            }
+            className="p-2 border rounded"
+            required
+          />
           <button
             type="submit"
             className="sm:col-span-3 bg-blue-600 text-white py-2 rounded"

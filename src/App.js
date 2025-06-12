@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Admin pages
-import AdminDashboard from "./pages/admin/Dashboard";
+import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers     from "./pages/admin/AdminUsers";
 
 // Provider pages

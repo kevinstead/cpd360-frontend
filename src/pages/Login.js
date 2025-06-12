@@ -1,4 +1,3 @@
-// src/pages/Login.js
 import React, { useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -16,20 +15,38 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await axios.post("/api/auth/login", form);
+      console.log("🟨 Raw login response:", res.data);
+
       const token = res.data.token;
 
-      // Decode JWT for role
-      const { role } = jwtDecode(token);
+      if (!token) {
+        alert("No token received from server.");
+        return;
+      }
+
+      const decoded = jwtDecode(token);
+      console.log("🟩 Decoded token:", decoded);
+
+      const role = decoded.role;
 
       // Save to localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
 
-      // Navigate to role-specific dashboard
-      navigate(`/${role}`);
+      // Redirect
+      if (role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (role === "provider") {
+        navigate("/provider/appointments");
+      } else if (role === "patient") {
+        navigate("/patient/appointments");
+      } else {
+        alert("Unknown user role. Please contact support.");
+      }
+
     } catch (err) {
-      alert(err.response?.data?.msg || "Login failed");
-      console.error("Login Error:", err);
+      console.error("❌ Login error:", err);
+      alert(err.response?.data?.msg || "Login failed. Check email or password.");
     }
   };
 
@@ -77,6 +94,7 @@ export default function Login() {
             Log In
           </button>
         </form>
+
         <p className="mt-4 text-center text-sm text-gray-600">
           Don’t have an account?{" "}
           <Link to="/register" className="text-blue-600 hover:underline">
