@@ -16,17 +16,16 @@ import ProviderAppointments from "./pages/provider/ProviderAppointments";
 import PatientAppointments  from "./pages/patient/PatientAppointments";
 import PatientRecords       from "./pages/patient/PatientRecords";
 
-
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Public */}
-        <Route path="/"      element={<Navigate to="/login" />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login"    element={<Login />} />
+        {/* Public Routes */}
+        <Route path="/"             element={<Navigate to="/login" />} />
+        <Route path="/register"     element={<Register />} />
+        <Route path="/login"        element={<Login />} />
 
-        {/* Admin */}
+        {/* Admin Routes */}
         <Route
           path="/admin"
           element={
@@ -44,7 +43,7 @@ function App() {
           }
         />
 
-        {/* Provider */}
+        {/* Provider Routes */}
         <Route
           path="/provider"
           element={
@@ -62,7 +61,7 @@ function App() {
           }
         />
 
-        {/* Patient */}
+        {/* Patient Routes */}
         <Route
           path="/patient"
           element={
