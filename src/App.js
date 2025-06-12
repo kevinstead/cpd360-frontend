@@ -1,102 +1,35 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Public pages
-import Login    from "./pages/Login";
+// Import pages
+import Login from "./pages/Login";
 import Register from "./pages/Register";
-
-// Auth wrapper
-import ProtectedRoute from "./components/ProtectedRoute";
-
-// Admin pages
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminUsers     from "./pages/admin/AdminUsers";
-
-// Provider pages
-import ProviderDashboard    from "./pages/provider/Dashboard";
+import RegisterProvider from "./pages/RegisterProvider";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProviderAppointments from "./pages/provider/ProviderAppointments";
-
-// Patient pages
-import PatientDashboard    from "./pages/patient/Dashboard";
 import PatientAppointments from "./pages/patient/PatientAppointments";
-import PatientRecords      from "./pages/patient/PatientRecords";
 
-function App() {
+export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Public */}
-        <Route path="/"        element={<Navigate to="/login" />} />
-        <Route path="/login"   element={<Login />} />
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/register-provider" element={<RegisterProvider />} />
 
         {/* Admin */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/users"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminUsers />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
         {/* Provider */}
-        <Route
-          path="/provider"
-          element={
-            <ProtectedRoute allowedRoles={["provider"]}>
-              <ProviderDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/provider/appointments"
-          element={
-            <ProtectedRoute allowedRoles={["provider"]}>
-              <ProviderAppointments />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/provider/appointments" element={<ProviderAppointments />} />
 
         {/* Patient */}
-        <Route
-          path="/patient"
-          element={
-            <ProtectedRoute allowedRoles={["patient"]}>
-              <PatientDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/patient/appointments"
-          element={
-            <ProtectedRoute allowedRoles={["patient"]}>
-              <PatientAppointments />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/patient/records"
-          element={
-            <ProtectedRoute allowedRoles={["patient"]}>
-              <PatientRecords />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/patient/appointments" element={<PatientAppointments />} />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Optional: Add a fallback for unknown routes */}
+        {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </Router>
   );
 }
-
-export default App;
