@@ -1,31 +1,36 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import Register from "./pages/Register";
+// Public pages
 import Login    from "./pages/Login";
+import Register from "./pages/Register";
+
+// Auth wrapper
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Dashboards
-import AdminDashboard    from "./pages/admin/Dashboard";
-import ProviderDashboard from "./pages/provider/Dashboard";
-import PatientDashboard  from "./pages/patient/Dashboard";
+// Admin pages
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminUsers     from "./pages/admin/AdminUsers";
 
-// Sidebar-linked pages
-import AdminUsers           from "./pages/admin/AdminUsers";
+// Provider pages
+import ProviderDashboard    from "./pages/provider/Dashboard";
 import ProviderAppointments from "./pages/provider/ProviderAppointments";
-import PatientAppointments  from "./pages/patient/PatientAppointments";
-import PatientRecords       from "./pages/patient/PatientRecords";
+
+// Patient pages
+import PatientDashboard    from "./pages/patient/Dashboard";
+import PatientAppointments from "./pages/patient/PatientAppointments";
+import PatientRecords      from "./pages/patient/PatientRecords";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Routes */}
-        <Route path="/"             element={<Navigate to="/login" />} />
-        <Route path="/register"     element={<Register />} />
-        <Route path="/login"        element={<Login />} />
+        {/* Public */}
+        <Route path="/"        element={<Navigate to="/login" />} />
+        <Route path="/login"   element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-        {/* Admin Routes */}
+        {/* Admin */}
         <Route
           path="/admin"
           element={
@@ -43,7 +48,7 @@ function App() {
           }
         />
 
-        {/* Provider Routes */}
+        {/* Provider */}
         <Route
           path="/provider"
           element={
@@ -61,7 +66,7 @@ function App() {
           }
         />
 
-        {/* Patient Routes */}
+        {/* Patient */}
         <Route
           path="/patient"
           element={

@@ -1,6 +1,5 @@
 import React from "react";
-import Sidebar from "../../components/Sidebar"; // ✅ Make sure Sidebar.js exists here
-
+import Sidebar from "../../components/Sidebar";
 function AdminDashboard() {
   return (
     <div className="flex min-h-screen">
