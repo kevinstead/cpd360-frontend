@@ -11,10 +11,11 @@ import ProviderDashboard from "./pages/provider/Dashboard";
 import PatientDashboard  from "./pages/patient/Dashboard";
 
 // Sidebar-linked pages
-import AdminUsers          from "./pages/AdminUsers";
+import AdminUsers           from "./pages/admin/AdminUsers";
 import ProviderAppointments from "./pages/provider/ProviderAppointments";
 import PatientAppointments  from "./pages/patient/PatientAppointments";
-import PatientRecords       from "./pages/PatientRecords";
+import PatientRecords       from "./pages/patient/PatientRecords";
+
 
 function App() {
   return (
