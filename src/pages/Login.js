@@ -1,7 +1,7 @@
 // src/pages/Login.js
 import React, { useState } from "react";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";        // <-- named import
+import { jwtDecode } from "jwt-decode";      // named import
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
@@ -15,11 +15,14 @@ export default function Login() {
       console.log("LOGIN RESPONSE:", res.data);
 
       const token = res.data.token;
-      const { role } = jwtDecode(token);        // <-- use jwtDecode
+      // Decode the JWT to extract the role
+      const { role } = jwtDecode(token);
 
+      // Persist for ProtectedRoute
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
 
+      // Redirect to /patient, /provider, or /admin
       navigate(`/${role}`);
     } catch (err) {
       alert(err.response?.data?.msg || "Login failed");
