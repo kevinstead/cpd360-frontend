@@ -24,8 +24,8 @@
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
-    "postcss": "^8.5.4",
-    "tailwindcss": "^4.1.8"
+    "postcss": "^8.5.5",
+    "tailwindcss": "^4.1.10"
   },
   "browserslist": {
     "production": [
