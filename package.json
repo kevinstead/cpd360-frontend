@@ -23,9 +23,11 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.10",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
     "postcss": "^8.5.5",
+    "postcss-loader": "^8.1.1",
     "tailwindcss": "^4.1.10"
   },
   "browserslist": {
