@@ -1,20 +1,21 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import ProviderAppointments from "./pages/provider/ProviderAppointments";
 
 // Public pages
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import RegisterProvider from "./pages/RegisterProvider";
+import Login             from "./pages/Login";
+import Register          from "./pages/Register";
+import RegisterProvider  from "./pages/RegisterProvider";
 
 // Admin pages
-import EndOfDayWrapUp from "./pages/admin/EndOfDayWrapUp";
-import HomeOverview from "./pages/admin/HomeOverview";
-import PatientPrep from "./pages/admin/PatientPrep";
-import PopulationHealthPanel from "./pages/admin/PopulationHealthPanel";
-import RCMAnalyticsModal from "./pages/admin/RCMAnalyticsModal";
-import ReferralManagement from "./pages/admin/ReferralManagement";
+import EndOfDayWrapUp          from "./pages/admin/EndOfDayWrapUp";
+import HomeOverview            from "./pages/admin/HomeOverview";
+import PatientPrep             from "./pages/admin/PatientPrep";
+import PopulationHealthPanel   from "./pages/admin/PopulationHealthPanel";
+import RCMAnalyticsModal       from "./pages/admin/RCMAnalyticsModal";
+import ReferralManagement      from "./pages/admin/ReferralManagement";
 import TelehealthSessionWrapper from "./pages/admin/TelehealthSessionWrapper";
-import UnifiedInbox from "./pages/admin/UnifiedInbox";
+import UnifiedInbox            from "./pages/admin/UnifiedInbox";
 
 // Route protection
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -27,6 +28,16 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/register-provider" element={<RegisterProvider />} />
+
+        {/* Provider Routes */}
+        <Route
+          path="/provider/appointments"
+          element={
+            <ProtectedRoute allowedRoles={["provider", "admin"]}>
+              <ProviderAppointments />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Admin & Provider Routes */}
         <Route
