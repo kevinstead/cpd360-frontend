@@ -8,10 +8,11 @@ export default function Register() {
     name: "",
     email: "",
     password: "",
-    role: "patient" // default role; adjust if needed
+    role: "patient" // default role
   });
 
   const navigate = useNavigate();
+  const { name, email, password, role } = form;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,12 +22,28 @@ export default function Register() {
     e.preventDefault();
     try {
       const res = await axios.post("/api/auth/register", form);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", form.role);
-      navigate(`/${form.role}`);
+      const { token, user } = res.data;
+
+      // Persist authentication
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", user.role);
+      localStorage.setItem("userName", user.name);
+
+      // Redirect based on role
+      switch (user.role) {
+        case "provider":
+          navigate("/appointments/provider");
+          break;
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        default:
+          // patient
+          navigate("/appointments/patient");
+      }
     } catch (err) {
+      console.error("Registration error:", err);
       alert(err.response?.data?.msg || "Registration failed");
-      console.error(err);
     }
   };
 
@@ -37,50 +54,56 @@ export default function Register() {
           Create Account
         </h2>
         <form onSubmit={handleRegister} className="space-y-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            Full Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            autoComplete="name"
-            placeholder="John Doe"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Full Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              placeholder="John Doe"
+              value={name}
+              onChange={handleChange}
+              required
+              className="w-full p-2 border rounded"
+            />
+          </div>
 
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            autoComplete="email"
-            placeholder="you@example.com"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={handleChange}
+              required
+              className="w-full p-2 border rounded"
+            />
+          </div>
 
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            autoComplete="new-password"
-            placeholder="••••••••"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              placeholder="••••••••"
+              value={password}
+              onChange={handleChange}
+              required
+              className="w-full p-2 border rounded"
+            />
+          </div>
 
           <button
             type="submit"
@@ -91,7 +114,7 @@ export default function Register() {
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link to="/login" className="text-blue-600 hover:underline">
             Log In
           </Link>
