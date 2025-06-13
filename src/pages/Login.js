@@ -37,9 +37,9 @@ export default function Login() {
       if (user.role === "admin") {
         navigate("/admin/dashboard");
       } else if (user.role === "provider") {
-        navigate("/appointments/provider");
+        navigate("/provider/appointments");
       } else if (user.role === "patient") {
-        navigate("/appointments/patient");
+        navigate("/patient/appointments");
       } else {
         // fallback to login
         navigate("/login");
@@ -69,6 +69,7 @@ export default function Login() {
               value={form.email}
               onChange={handleChange}
               required
+              autoComplete="email"
               className="w-full p-2 border rounded"
             />
           </div>
@@ -85,6 +86,7 @@ export default function Login() {
               value={form.password}
               onChange={handleChange}
               required
+              autoComplete="current-password"
               className="w-full p-2 border rounded"
             />
           </div>
