@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Layout from '../../layouts/Layout';
-import Video from '@twilio/video';
+import Video from 'twilio-video';
 import axios from 'axios';
 
 export default function TelehealthSession() {
