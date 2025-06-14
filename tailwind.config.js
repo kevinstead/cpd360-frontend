@@ -22,5 +22,15 @@ module.exports = {
       lineHeight: tokens.lineHeights,
     },
   },
-  plugins: [],
+  plugins: [
+    // inject global base styles
+    function ({ addBase }) {
+      addBase({
+        'html, :host': {
+          '-webkit-text-size-adjust': '100%',
+          'text-size-adjust': '100%',
+        },
+      });
+    }
+  ],
 };
