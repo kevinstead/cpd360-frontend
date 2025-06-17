@@ -22,7 +22,12 @@ export default function Login() {
     try {
       console.log("🚀 Sending POST to backend with:", form);
 
-      const { data } = await axios.post("http://localhost:5000/api/auth/login", form);
+      const { data } = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        form,
+        { withCredentials: true } // ✅ required to work with CORS + cookies
+      );
+
       const { token, user } = data;
 
       if (!token || !user) {
