@@ -1,4 +1,3 @@
-// src/pages/Login.js
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -13,6 +12,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("🔍 handleSubmit triggered");
 
     if (!form.email || !form.password) {
       alert("Email and password are required.");
@@ -28,12 +28,11 @@ export default function Login() {
         return;
       }
 
-      // Persist auth data
       localStorage.setItem("token", token);
       localStorage.setItem("role", user.role);
       localStorage.setItem("userName", user.name);
 
-      // Redirect based on role
+      // Redirect user by role
       if (user.role === "admin") {
         navigate("/admin/dashboard");
       } else if (user.role === "provider") {
@@ -41,11 +40,10 @@ export default function Login() {
       } else if (user.role === "patient") {
         navigate("/patient/appointments");
       } else {
-        // fallback to login
         navigate("/login");
       }
     } catch (err) {
-      console.error("Login error:", err);
+      console.error("❌ Login error:", err.response?.data || err.message);
       alert(err.response?.data?.msg || "Login failed. Check email or password.");
     }
   };
