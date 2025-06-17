@@ -2,7 +2,6 @@
 
 /* Prevent mobile browsers from auto-zooming text */
 html {
-  -webkit-text-size-adjust: 100%;
   text-size-adjust:         100%;
 }
 

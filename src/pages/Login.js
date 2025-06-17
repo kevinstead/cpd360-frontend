@@ -20,6 +20,8 @@ export default function Login() {
     }
 
     try {
+      console.log("🚀 Sending POST to backend with:", form);
+
       const { data } = await axios.post("http://localhost:5000/api/auth/login", form);
       const { token, user } = data;
 
@@ -32,7 +34,6 @@ export default function Login() {
       localStorage.setItem("role", user.role);
       localStorage.setItem("userName", user.name);
 
-      // Redirect user by role
       if (user.role === "admin") {
         navigate("/admin/dashboard");
       } else if (user.role === "provider") {
@@ -98,7 +99,7 @@ export default function Login() {
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don’t have an account?{' '}
+          Don’t have an account?{" "}
           <Link to="/register" className="text-blue-600 hover:underline">
             Register
           </Link>
